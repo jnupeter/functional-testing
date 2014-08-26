@@ -7,6 +7,9 @@
 
 package au.edu.qtac.admission.webtest;
 
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -41,12 +44,13 @@ public class LoginPage {
 
     public LoginPage login() {
         driver.findElement(By.id("j_idt7:btnLogin")).click();
-        System.out.println("todo: wait api.");
+        System.out.println("todo: wait api: implicityly wait.");
+        driver.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
         return this;
     }
     
     public String getResultMessage() {
-        final String msg = driver.findElement(By.cssSelector("div.ui-growl")).getText();
+        final String msg = driver.findElement(By.cssSelector("div.ui-growl-item-container")).getText();
         return msg;
     }
     
