@@ -39,8 +39,12 @@ public class DragAndDropTest {
         driver.navigate().to("http://pfdemo-peterdemo101.rhcloud.com/pfdemo/dragdrop.xhtml");
         Actions builder = new Actions(driver);
         
-        Action dragAndDrop = builder.clickAndHold(driver.findElement(By.id("j_idt11_header")))
-                .moveByOffset(100, 300).release().build();
+//        Action dragAndDrop = builder.clickAndHold(driver.findElement(By.id("j_idt11_header")))
+//                .moveByOffset(100, 300).release().build();
+        
+        
+        Action dragAndDrop = builder.dragAndDrop(driver.findElement(By.className("ui-draggable")),
+                driver.findElement(By.className("ui-droppable"))).build();
         
         dragAndDrop.perform();
        
