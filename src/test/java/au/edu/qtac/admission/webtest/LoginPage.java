@@ -7,11 +7,12 @@
 
 package au.edu.qtac.admission.webtest;
 
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * <p>
@@ -32,21 +33,45 @@ public class LoginPage {
          }
     }
     
-    public LoginPage withUsername(String username){
+    private LoginPage withUsername(String username){
         driver.findElement(By.id("j_idt7:username")).sendKeys(username);
         return this;
     }
     
-    public LoginPage withPassword(String password){
+    private LoginPage withPassword(String password){
         driver.findElement(By.id("j_idt7:password")).sendKeys(password);
         return this;
     }
 
-    public LoginPage login() {
+    private void login() {
         driver.findElement(By.id("j_idt7:btnLogin")).click();
-        System.out.println("todo: wait api: implicityly wait.");
-        driver.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
+    }
+    
+    public LoginPage loginWithFailure(String username, String password) {
+        this.withUsername(username).withPassword(password).login();
         return this;
+    }
+    
+    public IndexPage loginWithSuccessfully(String username, String password) {
+        this.withUsername(username).withPassword(password).login();
+        
+        //it is important: it makes Browser to look for the element that 
+        //the locator shows, it make driver implicitily waits
+        //the most important is to set implicitly waits timeout long enough!!!!
+        driver.findElement(By.xpath("//html/body/button"));
+
+        // explicit wait 
+//        WebElement e = (new WebDriverWait(driver, 10)).until(new ExpectedCondition<WebElement>(){
+//            @Override
+//            public WebElement apply(WebDriver d) {
+//                return d.findElement(By.xpath("//html/body/button"));
+//            }
+//        });
+
+//          Another explicit wait
+//        WebDriverWait wait =  new WebDriverWait(driver, 10);
+//        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//html/body/button")));
+        return new IndexPage(driver);
     }
     
     public String getResultMessage() {

@@ -4,6 +4,7 @@
  */
 package au.edu.qtac.admission.webtest;
 
+import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -22,6 +23,7 @@ public class LoginTest {
     @Before
     public void setup() {
        driver = new FirefoxDriver();
+       driver.manage().timeouts().implicitlyWait(10000, TimeUnit.MILLISECONDS);
        driver.navigate().to("http://pfdemo-peterdemo101.rhcloud.com/pfdemo/login/login.xhtml");
     }
     
@@ -39,7 +41,7 @@ public class LoginTest {
     @Test
     public void errorMessageShouldBeShown() {
         LoginPage loginPage = new LoginPage(driver);
-        LoginPage nLoginPage = loginPage.withUsername("peter").withPassword("dd").login();
+        LoginPage nLoginPage = loginPage.loginWithFailure("peter", "dd");
         assertEquals("Welcome to our system", nLoginPage.getTitle());
         assertTrue(nLoginPage.getResultMessage().contains("error"));
     }
@@ -47,7 +49,8 @@ public class LoginTest {
     @Test
     public void successfulMessageShouldBeShown() {
         LoginPage loginPage = new LoginPage(driver);
-        LoginPage nLoginPage = loginPage.withUsername("peter").withPassword("iampeter").login();
-        assertTrue(nLoginPage.getResultMessage().contains("successfully"));
+        IndexPage ip = loginPage.loginWithSuccessfully("peter", "iampeter");
+        System.out.println("new title:" + ip.getTitle());
+        assertEquals("Welcome Online Service", ip.getTitle());
     }
 }
