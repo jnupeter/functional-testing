@@ -7,6 +7,7 @@
 
 package functional.testing.customerclient.page;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openqa.selenium.By;
@@ -26,6 +27,7 @@ public class LoginPage {
     
     public LoginPage(WebDriver driver) {
         this.driver = driver;
+        driver.manage().timeouts().implicitlyWait(10000, TimeUnit.MILLISECONDS);
         if (!"Customer Login".equals(driver.getTitle())) {
             throw new IllegalStateException("Not on login page.");
         }
@@ -56,11 +58,8 @@ public class LoginPage {
     
     public IndexPage loginWithSuccess(String username, String password) {
         this.loginAs(username, password);
-        try {
-            Thread.sleep(5000);  // work around, should use Wait API
-        } catch (InterruptedException ex) {
-            Logger.getLogger(LoginPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //wait until Logout button is present
+        driver.findElement(By.xpath("/html/body/form/input[2]"));
         return new IndexPage(driver);
     }
     
