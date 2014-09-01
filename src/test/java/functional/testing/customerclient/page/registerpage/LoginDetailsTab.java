@@ -8,8 +8,6 @@
 package functional.testing.customerclient.page.registerpage;
 
 import functional.testing.customerclient.util.HoldOn;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

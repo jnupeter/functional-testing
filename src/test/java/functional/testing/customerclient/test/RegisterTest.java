@@ -10,6 +10,7 @@ package functional.testing.customerclient.test;
 import functional.testing.customerclient.page.LoginPage;
 import functional.testing.customerclient.page.RegisterPage;
 import functional.testing.customerclient.page.registerpage.LoginDetailsTab;
+import functional.testing.customerclient.page.registerpage.PersonalDetailsTab;
 import functional.testing.customerclient.page.registerpage.Tab;
 import functional.testing.customerclient.util.ScreenCapturer;
 import java.io.File;
@@ -77,6 +78,15 @@ public class RegisterTest {
     }
 
     @Test
+    public void loginDetailsAlreadyExistEmailShouldBeBlocked() {
+        LoginDetailsTab lt = (LoginDetailsTab) rp.getCurrentTab();
+        lt.typeEmail("jnupeter@gmail.com").clickContinueButton();
+        
+        ScreenCapturer.takeAShot(driver, "duplicatedEmailShouldBeBlocked.png");
+        assertEquals("Already Exist email should be blocked.", "This email address is already attached to an existing Customer Account.", lt.getEmailValidationErrorMsg());
+    }
+    
+    @Test
     public void loginDetailsPasswordStrenghtShouldBeChecked() {
         LoginDetailsTab lt = (LoginDetailsTab) rp.getCurrentTab();
         lt.typeEmail("ab@asfd.net").reTypeEmail("ab@asfd.net").typePassword("1234").reTypePassword("1234").clickContinueButton();
@@ -97,6 +107,34 @@ public class RegisterTest {
         Tab newCurrentTab = rp.getCurrentTab();
         assertEquals("Should be on Personal Details tab now.", "Personal Details", newCurrentTab.getTitle());
         ScreenCapturer.takeAShot(driver, "shouldBeOnNextTab2.png");
+    }
+    
+    @Test
+    public void personalDetailsShouldBeAbleToValid() {
+        LoginDetailsTab lt = (LoginDetailsTab) rp.getCurrentTab();
+        lt.typeEmail("abc@cde.net").reTypeEmail("abc@cde.net").typePassword("Ctest1234").reTypePassword("Ctest1234").clickContinueButton();
+        
+        PersonalDetailsTab pt = (PersonalDetailsTab) rp.getCurrentTab();
+        pt.typeFamilyName("!@#peter").typeGivenName("cai!@#").typeSecondGivenName("asdfD!@#").typeDateOfBirth("12/12/2012").clickContinueButton();
+        
+        ScreenCapturer.takeAShot(driver, "personalDetailsFailed.png");
+        final String nameValidationMsg = "Acceptable values are lower and upper case A-Z, full stop(.), space ( ), hyphen (-) and apostrophe (').";
+        assertEquals("Family Name should be validated.", nameValidationMsg, pt.getFamilyNameErrorMsg());
+        assertEquals("Given Name should be validated.", nameValidationMsg, pt.getGivenNameErrorMsg());
+        assertEquals("Second Given Name should be validated.", nameValidationMsg, pt.getSecGivenNameErrorMsg());
+        assertEquals("Minumim age should be honour", "You must be a minimum age of 15 to apply for tertiary admission. Please contact QTAC on 1300 GO QTAC for assistance.", pt.getDateOfBirthErrorMsg());
+    }
+    
+    @Test
+    public void personalDetailsShouldBeAbleToPassToNextTab() {
+        LoginDetailsTab lt = (LoginDetailsTab) rp.getCurrentTab();
+        lt.typeEmail("abc@cde.net").reTypeEmail("abc@cde.net").typePassword("Ctest1234").reTypePassword("Ctest1234").clickContinueButton();
+        
+        PersonalDetailsTab pt = (PersonalDetailsTab) rp.getCurrentTab();
+        pt.typeFamilyName("peter").typeGivenName("cai").typeDateOfBirth("12/12/1983").clickContinueButton();
+        
+        Tab newTab = rp.getCurrentTab();
+        assertEquals("Should be on Addresses Tab now.", "Addresses", newTab.getTitle());
     }
     
     @After
