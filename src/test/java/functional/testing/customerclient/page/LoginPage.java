@@ -63,6 +63,13 @@ public class LoginPage {
         return new IndexPage(driver);
     }
     
+    public RegisterPage clickRegisterAccount() {
+        driver.findElement(By.linkText("Register New Account")).click();
+        //wait until
+        driver.findElement(By.id("registerAPanel"));
+        return new RegisterPage(driver);
+    }
+
     //helper
     public String getEmailValidationMsg() {
         final String msg = driver.findElement(By.xpath("/html/body/div[4]/div/form/fieldset/div[1]/div[2]/span")).getText();
