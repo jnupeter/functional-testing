@@ -39,6 +39,7 @@ import org.openqa.selenium.TakesScreenshot;
  * @version %I%,%G%
  * @since 1.0
  */
+@Ignore
 public class RegisterTest {
 
     private WebDriver driver;

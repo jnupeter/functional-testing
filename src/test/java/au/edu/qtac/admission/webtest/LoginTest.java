@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -16,6 +17,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  *
  * @author Peter Cai <peter.cai@qtac.edu.au>
  */
+@Ignore
 public class LoginTest {
     private WebDriver driver;
 
