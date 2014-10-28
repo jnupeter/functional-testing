@@ -12,19 +12,27 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 /**
  *
  * @author Peter Cai <peter.cai@qtac.edu.au>
  */
-@Ignore
+
 public class LoginTest {
     private WebDriver driver;
-
+    protected static DesiredCapabilities dCaps;
     
     @Before
     public void setup() {
-       driver = new FirefoxDriver();
+//       driver = new FirefoxDriver();
+       dCaps = new DesiredCapabilities();
+       dCaps.setJavascriptEnabled(true);
+       dCaps.setCapability("takesScreenshot", false);
+       System.setProperty("phantomjs.binary.path","/home/peter/tmp/phantomjs-1.9.8-linux-x86_64/bin/phantomjs");
+       driver = new PhantomJSDriver(dCaps);
+               
        driver.manage().timeouts().implicitlyWait(10000, TimeUnit.MILLISECONDS);
        driver.navigate().to("http://pfdemo-peterdemo101.rhcloud.com/pfdemo/login/login.xhtml");
     }
